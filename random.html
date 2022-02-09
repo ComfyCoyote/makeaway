@@ -1,0 +1,15 @@
+<div class="col-md-4">
+    <div class="content-section">
+    <h3>New Product Build</h3>
+
+        <p class='text-muted'>These are the items in your new product
+        <ul class="list-group">
+            {% for item in build %}
+        <li class="list-group-item list-group-item-light">{{ item.name }}: {{ item.quantity }}</li>
+            {% endfor %}
+    
+    </ul>
+    </p>
+    </div>
+    </div>
+</div>

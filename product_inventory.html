@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% for product in products %}
+    {% if product.image_file %}
+<div class="content-section">
+    <div class="media">
+      <img class="rounded-circle account-img" src="{{ url_for('static', filename='images/' + product.image_file) }}">
+    </div>
+    <a href="{{ url_for('product', product_id=product.id) }}"><h2 class="article-title">{{ product.name }}</h2></a>
+        <p>In inventory: {{ product.quantity}}</p>
+        <p>Price: ${{product.price}}</p>
+  </div>
+    {% else %}
+    </div>
+        <h2><a class="article-title">{{ product.name }}</a></h2>
+        <p>In inventory {{ product.quantity}}</p>
+        <p>Price {{product.price}}</p>
+    </div>
+    {% endif %}
+{% endfor %}    
+{% endblock %}

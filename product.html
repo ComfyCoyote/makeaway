@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+{% block content %}
+<article class="media content-section">
+    {% if product.image_file %}
+    <div class="content-section">
+        <div class="media">
+          <img class="rounded-circle account-img" src="{{ url_for('static', filename='images/' + product.image_file) }}">
+        </div>
+        <h2 class="article-title">{{ product.name }}</h2>
+            <p>In inventory: {{ product.quantity}}</p>
+            <p>Raw Value: ${{product.price}}</p>
+            <h5>Components</h5>
+            {% for i in components %}
+            <p>{{ i }}</p>
+            {% endfor %}
+      </div>
+    {% else %}
+    <div class="content-section">
+        <h2 class="article-title">{{ product.name }}</h2>
+            <p>In inventory {{ product.quantity}}</p>
+            <p>Price per unit {{product.price}}</p>
+      </div>
+    {% endif %}
+
+    <div class="content-section">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Edit Product</legend>
+                <div class="form-group">
+                    {{ form.name.label(class="form-control-label") }}
+                    {% if form.name.errors %}
+                    {{ form.name(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.type.label(class="form-control-label") }}
+                    {% if form.type.errors %}
+                    {{ form.type(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.type.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.type(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.quantity.label(class="form-control-label") }}
+                    {% if form.quantity.errors %}
+                    {{ form.quantity(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.quantity.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.quantity(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit_item(class="btn btn-outline-info") }}
+                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete {{ product.name }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('delete_product', product_id=product.id) }}" method="POST">
+                <input class="btn btn-danger" type="submit" value="Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
